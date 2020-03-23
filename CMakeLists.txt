@@ -6,8 +6,8 @@
 #
 # Imported targets in global scope:
 #
-#   Trader
-#   Quote
+#   EES::Trader
+#   EES::Quote
 #
 #]===============================================================================]
 
@@ -25,15 +25,16 @@ project(EES VERSION 1.0
 #=================================================================================
 
 # Target: Trader
-add_library(Trader INTERFACE)
+add_library(EES.Trader INTERFACE)
+add_library(EES::Trader ALIAS EES.Trader)
 
 include(GNUInstallDirs)
-target_include_directories(Trader
+target_include_directories(EES.Trader
   INTERFACE  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
              $<INSTALL_INTERFACE:include/EES>
   )
 
-target_link_libraries(Trader
+target_link_libraries(EES.Trader
   INTERFACE  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/libEESTraderApi.so>
              $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}/lib/EES/libEESTraderApi.so>
   )
@@ -76,13 +77,11 @@ install(FILES lib/libEESQuoteApi.so
 #=================================================================================
 
 # Packaging : Trader
-install(TARGETS Trader
-  EXPORT Trader_export
-  LIBRARY
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/lib/EES
-  )
+install(TARGETS EES.Trader EXPORT EES_export)
 
-install(EXPORT Trader_export
+set_target_properties(EES.Trader PROPERTIES EXPORT_NAME Trader)
+install(EXPORT EES_export
+  NAMESPACE EES::
+  FILE EESTargets.cmake
   DESTINATION lib/cmake/EES
-  FILE EESTarget.cmake
   )
