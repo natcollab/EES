@@ -36,18 +36,19 @@ target_include_directories(EES.Trader
 
 target_link_libraries(EES.Trader
   INTERFACE  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/libEESTraderApi.so>
-             $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}/lib/EES/libEESTraderApi.so>
+             $<INSTALL_INTERFACE:lib/EES/libEESTraderApi.so>
   )
 
 # Target: Quote
-add_library(Quote INTERFACE)
+add_library(EES.Quote INTERFACE)
+add_library(EES::Quote ALIAS EES.Quote)
 
-target_include_directories(Quote
+target_include_directories(EES.Quote
   INTERFACE  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
              $<INSTALL_INTERFACE:include/EES>
   )
 
-target_link_libraries(Quote
+target_link_libraries(EES.Quote
   INTERFACE  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/libEESQuoteApi.so>
              $<INSTALL_INTERFACE:lib/EES/libEESQuoteApi.so>
   )
@@ -80,6 +81,16 @@ install(FILES lib/libEESQuoteApi.so
 install(TARGETS EES.Trader EXPORT EES_export)
 
 set_target_properties(EES.Trader PROPERTIES EXPORT_NAME Trader)
+# install(EXPORT EES_export
+#   NAMESPACE EES::
+#   FILE EESTargets.cmake
+#   DESTINATION lib/cmake/EES
+#   )
+
+# Packaging : Quote
+install(TARGETS EES.Quote EXPORT EES_export)
+
+set_target_properties(EES.Quote PROPERTIES EXPORT_NAME Quote)
 install(EXPORT EES_export
   NAMESPACE EES::
   FILE EESTargets.cmake
