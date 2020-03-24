@@ -88,7 +88,6 @@ set_target_properties(EES.Trader PROPERTIES EXPORT_NAME Trader)
 install(TARGETS EES.Quote EXPORT EES_export)
 set_target_properties(EES.Quote PROPERTIES EXPORT_NAME Quote)
 
-# TODO: library path in export target file is relative path, which is not correct
 install(EXPORT EES_export
   NAMESPACE EES::
   FILE EESTargets.cmake
